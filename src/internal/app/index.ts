@@ -15,7 +15,7 @@ if (result.error) {
 const app: express.Application = express();
 
 // Express configuration
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 8080);
 app.set('host', process.env.HOST || 'localhost');
 app.set('env', process.env.NODE_ENV || 'development');
 app.use(compression());
