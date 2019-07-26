@@ -1,7 +1,7 @@
 import appContext from '../../../context/app';
 import routeContext from '../../../context/route/tasks/list';
 import {
-  Task,
+  ListTasksPayload,
   Tasks,
   HttpException
 } from '../../../models';
@@ -10,15 +10,16 @@ export class Result {
   constructor(public status: number, public body: Tasks) {}
 }
 
-export const Handler = async (appCtx: appContext, routeCtx: routeContext): Promise<Result | HttpException> => {
+export const Handler = async (appCtx: appContext, routeCtx: routeContext, payload: ListTasksPayload): Promise<Result | HttpException> => {
   let tasks: Tasks;
 
-  const t1 = new Task('foo', new Date(), 'baz');
-  const t2 = new Task('bar', new Date(), 'baz');
+  try {
+    tasks = await appCtx.store.listTasks(payload.userID);
 
-  tasks = new Tasks();
-  tasks.push(t1);
-  tasks.push(t2);
+    return new Result(200, tasks);
+  } catch(e) {
+    console.error('err listing tasks', e);
 
-  return new Result(200, tasks);
+    return new HttpException(500, 'internal server error');
+  }
 }

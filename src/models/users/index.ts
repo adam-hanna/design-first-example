@@ -1,5 +1,5 @@
 export class User {
-  constructor(public userID: string, public userName: string) {}
+  constructor(public userID: string, public userName: string, public isAdmin: boolean) {}
 }
 
 export class CreateUserPayload {

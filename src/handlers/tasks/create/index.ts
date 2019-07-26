@@ -13,5 +13,13 @@ export class Result {
 export const Handler = async (appCtx: appContext, routeCtx: routeContext, payload: CreateTaskPayload): Promise<Result | HttpException> => {
   let task: Task;
 
-  return new Result(200, task);
+  try {
+    task = await appCtx.store.createTask(payload.userID, payload.note);
+
+    return new Result(200, task);
+  } catch (e) {
+    console.error('err creating new task', e);
+
+    return new HttpException(500, 'internal server error');
+  }
 }

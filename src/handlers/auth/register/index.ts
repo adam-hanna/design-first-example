@@ -13,5 +13,14 @@ export class Result {
 export const Handler = async (appCtx: appContext, routeCtx: routeContext, payload: RegisterPayload): Promise<Result | HttpException> => {
   let user: User;
 
-  return new Result(200, user);
+  try {
+    user = await appCtx.store.createUser(payload.userName, payload.password);
+
+    // TODO: create new session
+    return new Result(200, user);
+  } catch (e) {
+    console.error('err registering new user', e);
+
+    return new HttpException(500, 'internal server error');
+  }
 }

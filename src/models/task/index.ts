@@ -1,7 +1,7 @@
-import { IsString, Contains } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class Task {
-  constructor(public taskID: string, public createdAt: Date, public note: string) {}
+  constructor(public taskID: string, public userID: string, public timestamp: Date, public note: string) {}
 }
 
 export class CreateTaskPayload {
@@ -15,9 +15,15 @@ export class CreateTaskPayload {
 export class ShowTaskPayload {
   @IsString()
   public taskID: string;
+
+  @IsString()
+  public userID: string;
 }
 
 export class DeleteTaskPayload {
   @IsString()
   public taskID: string;
+
+  @IsString()
+  public userID: string;
 }

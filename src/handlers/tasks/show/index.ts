@@ -13,7 +13,13 @@ export class Result {
 export const Handler = async (appCtx: appContext, routeCtx: routeContext, payload: ShowTaskPayload): Promise<Result | HttpException> => {
   let task: Task;
 
-  task = new Task('foo', new Date(), 'baz');
+  try {
+    task = await appCtx.store.showTask(payload.taskID, payload.userID);
 
-  return new Result(200, task);
+    return new Result(200, task);
+  } catch(e) {
+    console.error('err showing task', e);
+
+    return new HttpException(500, 'internal server error');
+  }
 }

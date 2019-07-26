@@ -10,5 +10,12 @@ export class Result {
 }
 
 export const Handler = async (appCtx: appContext, routeCtx: routeContext, payload: LogoutPayload): Promise<Result | HttpException> => {
-  return new Result(200, 'ok');
+  try {
+    // TODO: delete user session
+    return new Result(200, 'ok');
+  } catch(e) {
+    console.error('err logging user out', e);
+
+    return new HttpException(500, 'internal server error');
+  }
 }
