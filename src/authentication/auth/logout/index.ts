@@ -10,4 +10,17 @@ export default async (
   payload: LogoutPayload,
   req: express.Request,
   res: express.Response,
-): Promise<HttpException | void> => {}
+): Promise<HttpException | void> => {
+  // check session
+  if (!req.session.key)
+    return new HttpException(401, 'unauthorized');
+
+  // set the destroySession function
+  routeCtx.destroySession = ():void => {
+    req.session.destroy((err: any): void => {
+      // TODO: properly handler error
+      if (!err)
+        console.log('err in callback', err);
+    });
+  }
+}

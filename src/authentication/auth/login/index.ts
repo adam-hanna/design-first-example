@@ -10,4 +10,8 @@ export default async (
   payload: LoginPayload,
   req: express.Request,
   res: express.Response,
-): Promise<HttpException | void> => {}
+): Promise<HttpException | void> => {
+  routeCtx.setSessionKey = (key: string): void => {
+    req.session.key = key;
+  }
+}

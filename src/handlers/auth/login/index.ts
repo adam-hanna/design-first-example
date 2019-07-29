@@ -20,7 +20,8 @@ export const Handler = async (appCtx: appContext, routeCtx: routeContext, payloa
 
     user = await appCtx.db.fetchUserByUsername(payload.userName);
 
-    // TODO: create new user session
+    routeCtx.setSessionKey(user.userID);
+
     return new Result(200, user);
   } catch (e) {
     console.error('err logging user in', e);

@@ -6,7 +6,7 @@ export const CreateUser = async(pool: Pool, userName: string, password: string):
   const client = await pool.connect();
   try {
     const { rows } = await client.query(`
-      INSTER INTO
+      INSERT INTO
         users(username, password, is_admin)
 
       VALUES

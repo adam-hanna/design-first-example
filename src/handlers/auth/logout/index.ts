@@ -11,7 +11,8 @@ export class Result {
 
 export const Handler = async (appCtx: appContext, routeCtx: routeContext, payload: LogoutPayload): Promise<Result | HttpException> => {
   try {
-    // TODO: delete user session
+    routeCtx.destroySession();
+
     return new Result(200, 'ok');
   } catch(e) {
     console.error('err logging user out', e);

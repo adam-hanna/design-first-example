@@ -1,8 +1,13 @@
+import cookieParser from 'cookie-parser';
+import passport from 'passport';
+import session from 'express-session';
 import app from './internal/app';
+import routes from './internal/routes';
 import appContext from './context/app';
 import DB from './db';
+const RedisStore = require('connect-redis')(session);
 
-// Create the store
+// Create the db
 const db: DB = new DB(
   process.env.POSTGRES_USER,
   process.env.POSTGRES_PASSWORD,
@@ -14,6 +19,26 @@ const db: DB = new DB(
 let appCtx: appContext = new appContext();
 appCtx.db = db;
 app.set('context', appCtx);
+
+// use passport for sessions, backed by redis
+app.use(session({ 
+  store: new RedisStore({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+  }),
+  secret: process.env.SESSION_SECRET,
+  saveUninitialized: true,
+  resave: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(cookieParser());
+
+/**
+ * Primary app routes.
+ */
+app.use('/', routes);
 
 /**
  *  * Start Express server.

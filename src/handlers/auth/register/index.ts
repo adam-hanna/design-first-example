@@ -16,7 +16,8 @@ export const Handler = async (appCtx: appContext, routeCtx: routeContext, payloa
   try {
     user = await appCtx.db.createUser(payload.userName, payload.password);
 
-    // TODO: create new session
+    routeCtx.setSessionKey(user.userID);
+
     return new Result(200, user);
   } catch (e) {
     console.error('err registering new user', e);

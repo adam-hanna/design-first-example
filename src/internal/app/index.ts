@@ -2,7 +2,6 @@ import express from 'express';
 import compression from 'compression';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import routes from '../routes';
 
 // Parse .env
 const result: dotenv.DotenvConfigOutput = dotenv.config();
@@ -21,10 +20,5 @@ app.set('env', process.env.NODE_ENV || 'development');
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-/**
- * Primary app routes.
- */
-app.use('/', routes);
 
 export default app;

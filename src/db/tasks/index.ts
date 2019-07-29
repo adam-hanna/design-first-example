@@ -6,7 +6,7 @@ export const CreateTask = async (pool: Pool, userID: string, note: string): Prom
   const client = await pool.connect();
   try {
     const { rows } = await client.query(`
-      INSTER INTO
+      INSERT INTO
         tasks(user_id, note)
 
       VALUES

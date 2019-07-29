@@ -10,4 +10,8 @@ export default async (
   payload: ShowTaskPayload,
   req: express.Request,
   res: express.Response,
-): Promise<HttpException | void> => {}
+): Promise<HttpException | void> => {
+  // check session
+  if (!req.session.key)
+    return new HttpException(401, 'unauthorized');
+}

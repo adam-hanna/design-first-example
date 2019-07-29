@@ -22,12 +22,16 @@ export default async (req: Request, res: Response): Promise<void> => {
   let payload: LoginPayload = Object.assign({}, new LoginPayload, reqPayload);
   
   const authenticationErr: HttpException | void = await authenticate(appCtx, routeCtx, payload, req, res)
-  if (authenticationErr)
+  if (authenticationErr) {
     res.status(authenticationErr.status).send(authenticationErr.body);
+    return
+  }
 
   const authorizationErr: HttpException | void = await authorize(appCtx, routeCtx, payload, req, res)
-  if (authorizationErr)
+  if (authorizationErr) {
     res.status(authorizationErr.status).send(authorizationErr.body);
+    return
+  }
 
   const result: Result | HttpException = await Handler(appCtx, routeCtx, payload)
   res.status(result.status).send(result.body);
