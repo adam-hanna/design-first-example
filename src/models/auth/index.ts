@@ -2,7 +2,7 @@ import { IsString, Contains } from 'class-validator';
 
 export class LoginPayload {
   @IsString()
-  public userName: string
+  public username: string
 
   @IsString()
   public password: string
@@ -10,7 +10,7 @@ export class LoginPayload {
 
 export class RegisterPayload {
   @IsString()
-  public userName: string;
+  public username: string;
 
   @IsString()
   public password: string;

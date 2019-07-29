@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import { User } from '../../models';
 
-export const IsUsernamePasswordValid = async(pool: Pool, userName: string, password: string): Promise<boolean> => {
+export const IsUsernamePasswordValid = async(pool: Pool, username: string, password: string): Promise<boolean> => {
   let valid: boolean;
   const client = await pool.connect();
   try {
@@ -21,7 +21,7 @@ export const IsUsernamePasswordValid = async(pool: Pool, userName: string, passw
         LIMIT
           1
       );
-    `, [userName, password]);
+    `, [username, password]);
 
     if (rows.length > 0)
       valid = rows[0];

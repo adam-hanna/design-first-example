@@ -7,7 +7,7 @@ export const CreateTask = async (pool: Pool, userID: string, note: string): Prom
   try {
     const { rows } = await client.query(`
       INSERT INTO
-        tasks(user_id, note)
+        todos(user_id, note)
 
       VALUES
         ($1, $2)
@@ -31,7 +31,7 @@ export const DeleteTask = async (pool: Pool, taskID: string, userID: string): Pr
   try {
     await client.query(`
       DELETE FROM
-        tasks
+        todos
 
       WHERE
         id = $1 AND
@@ -54,7 +54,7 @@ export const ShowTask = async (pool: Pool, taskID: string, userID: string): Prom
         note
 
       FROM 
-        tasks
+        todos
 
       WHERE 
         id = $1 AND
@@ -85,7 +85,7 @@ export const ListTasks = async (pool: Pool, userID: string): Promise<Tasks> => {
         note
 
       FROM 
-        tasks
+        todos
 
       WHERE 
         user_id = $1
@@ -113,7 +113,7 @@ export const DoesUserOwnTask = async(pool: Pool, taskID: string, userID: string)
           1
 
         FROM
-          tasks
+          todos
 
         WHERE
           id = $1 AND

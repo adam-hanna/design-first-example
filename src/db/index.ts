@@ -17,16 +17,16 @@ export default class {
     })
   }
 
-  public async createUser (userName: string, password: string): Promise<User> {
-    return await CreateUser(this.pool, userName, password);
+  public async createUser (username: string, password: string): Promise<User> {
+    return await CreateUser(this.pool, username, password);
   }
 
-  public async fetchUserByUsername(userName: string): Promise<User> {
-    return await FetchUserByUsername(this.pool, userName);
+  public async fetchUserByUsername(username: string): Promise<User> {
+    return await FetchUserByUsername(this.pool, username);
   }
 
-  public async isUsernamePasswordValid (userName: string, password: string): Promise<boolean> {
-    return await IsUsernamePasswordValid(this.pool, userName, password);
+  public async isUsernamePasswordValid (username: string, password: string): Promise<boolean> {
+    return await IsUsernamePasswordValid(this.pool, username, password);
   }
 
   public async createTask (userID: string, note: string): Promise<Task> {

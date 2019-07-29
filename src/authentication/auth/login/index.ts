@@ -11,7 +11,8 @@ export default async (
   req: express.Request,
   res: express.Response,
 ): Promise<HttpException | void> => {
-  routeCtx.setSessionKey = (key: string): void => {
-    req.session.key = key;
+  routeCtx.setSession = (userID: string, isAdmin: boolean): void => {
+    req.session.userID = userID;
+    req.session.isAdmin = isAdmin;
   }
 }

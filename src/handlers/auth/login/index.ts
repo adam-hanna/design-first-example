@@ -14,13 +14,13 @@ export const Handler = async (appCtx: appContext, routeCtx: routeContext, payloa
   let user: User;
 
   try {
-    let valid: boolean = await appCtx.db.isUsernamePasswordValid(payload.userName, payload.password);
+    let valid: boolean = await appCtx.db.isUsernamePasswordValid(payload.username, payload.password);
     if (!valid)
        return new HttpException(401, 'unauthorized');
 
-    user = await appCtx.db.fetchUserByUsername(payload.userName);
+    user = await appCtx.db.fetchUserByUsername(payload.username);
 
-    routeCtx.setSessionKey(user.userID);
+    routeCtx.setSession(user.userID, user.isAdmin);
 
     return new Result(200, user);
   } catch (e) {

@@ -14,9 +14,9 @@ export const Handler = async (appCtx: appContext, routeCtx: routeContext, payloa
   let user: User;
 
   try {
-    user = await appCtx.db.createUser(payload.userName, payload.password);
+    user = await appCtx.db.createUser(payload.username, payload.password);
 
-    routeCtx.setSessionKey(user.userID);
+    routeCtx.setSession(user.userID, user.isAdmin);
 
     return new Result(200, user);
   } catch (e) {

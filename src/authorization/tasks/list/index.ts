@@ -10,4 +10,10 @@ export default async (
   payload: ListTasksPayload,
   req: express.Request,
   res: express.Response,
-): Promise<HttpException | void> => {}
+): Promise<HttpException | void> => {
+  if (req.session.isAdmin)
+    return
+
+  if (req.session.userID != payload.userID)
+    return new HttpException(401, 'unauthorized');
+}

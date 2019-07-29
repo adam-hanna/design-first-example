@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import { User } from '../../models';
 
-export const CreateUser = async(pool: Pool, userName: string, password: string): Promise<User> => {
+export const CreateUser = async(pool: Pool, username: string, password: string): Promise<User> => {
   let user: User;
   const client = await pool.connect();
   try {
@@ -14,10 +14,10 @@ export const CreateUser = async(pool: Pool, userName: string, password: string):
 
       RETURNING
         id
-    `, [userName, password]);
+    `, [username, password]);
 
     if (rows.length > 0)
-      user = new User(rows[0].id, userName, false);
+      user = new User(rows[0].id, username, false);
 
     return user;
   } finally {
@@ -25,14 +25,13 @@ export const CreateUser = async(pool: Pool, userName: string, password: string):
   }
 }
 
-export const FetchUserByUsername = async(pool: Pool, userName: string): Promise<User> => {
+export const FetchUserByUsername = async(pool: Pool, username: string): Promise<User> => {
   let user: User;
   const client = await pool.connect();
   try {
     const { rows } = await client.query(`
       SELECT 
         id,
-        username,
         is_admin
 
       FROM 
@@ -43,10 +42,10 @@ export const FetchUserByUsername = async(pool: Pool, userName: string): Promise<
 
       LIMIT
         1
-    `, [userName]);
+    `, [username]);
 
     if (rows.length > 0)
-      user = new User(rows[0].id, rows[0].userName, rows[0].isAdmin);
+      user = new User(rows[0].id, username, rows[0].isAdmin);
 
     return user;
   } finally {

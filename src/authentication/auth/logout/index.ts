@@ -10,7 +10,7 @@ export default async (
   res: express.Response,
 ): Promise<HttpException | void> => {
   // check session
-  if (!req.session.key)
+  if (!req.session.userID)
     return new HttpException(401, 'unauthorized');
 
   // log the user out
