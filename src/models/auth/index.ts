@@ -15,8 +15,3 @@ export class RegisterPayload {
   @IsString()
   public password: string;
 }
-
-export class LogoutPayload {
-  @IsString()
-  public userID: string
-}
