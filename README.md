@@ -1,2 +1,2 @@
-# typ-exp
+# design-first example
 TODO...
