@@ -1,7 +1,7 @@
 {
-  "name": "typ-exp",
+  "name": "design-first-example",
   "version": "0.0.1",
-  "description": "A test app for typescript and express",
+  "description": "An example design-first app with postgres, redis, and passport.js for sessions",
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts",
