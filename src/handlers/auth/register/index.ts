@@ -14,7 +14,7 @@ export const Handler = async (appCtx: appContext, routeCtx: routeContext, payloa
   let user: User;
 
   try {
-    user = await appCtx.store.createUser(payload.userName, payload.password);
+    user = await appCtx.db.createUser(payload.userName, payload.password);
 
     // TODO: create new session
     return new Result(200, user);

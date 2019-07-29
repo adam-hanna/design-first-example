@@ -11,7 +11,7 @@ export class Result {
 
 export const Handler = async (appCtx: appContext, routeCtx: routeContext, payload: DeleteTaskPayload): Promise<Result | HttpException> => {
   try {
-    await appCtx.store.deleteTask(payload.taskID, payload.userID);
+    await appCtx.db.deleteTask(payload.taskID, payload.userID);
 
     return new Result(200, 'ok');
   } catch (e) {

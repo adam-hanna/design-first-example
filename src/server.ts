@@ -1,9 +1,9 @@
 import app from './internal/app';
 import appContext from './context/app';
-import Store from './store';
+import DB from './db';
 
 // Create the store
-const store: Store = new Store(
+const db: DB = new DB(
   process.env.POSTGRES_USER,
   process.env.POSTGRES_PASSWORD,
   process.env.POSTGRES_HOST,
@@ -12,7 +12,7 @@ const store: Store = new Store(
 );
 
 let appCtx: appContext = new appContext();
-appCtx.store = store;
+appCtx.db = db;
 app.set('context', appCtx);
 
 /**
@@ -22,7 +22,7 @@ const server = async () => {
   // Migrate the db.
   try {
     console.log('migrating db');
-    await store.migrate();
+    await db.migrate();
   } catch (e) {
     console.error('err migrating the database\n', e);
     process.exit(1);

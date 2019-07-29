@@ -14,7 +14,7 @@ export const Handler = async (appCtx: appContext, routeCtx: routeContext, payloa
   let task: Task;
 
   try {
-    task = await appCtx.store.showTask(payload.taskID, payload.userID);
+    task = await appCtx.db.showTask(payload.taskID, payload.userID);
 
     return new Result(200, task);
   } catch(e) {

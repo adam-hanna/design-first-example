@@ -1,5 +1,5 @@
-import Store from '../../store';
+import DB from '../../db';
 
 export default class appContext {
-  store: Store;
+  db: DB;
 }
