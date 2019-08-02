@@ -1,0 +1,44 @@
+{
+  "name": "design-first-example",
+  "version": "0.0.1",
+  "description": "An example design-first app with postgres, redis, and passport.js for sessions",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts",
+    "prod": "NODE_ENV=production npm run build && NODE_ENV=production npm run serve",
+    "serve": "node ./dist/server.js",
+    "test": "NODE_ENV=testing echo 'Error: no test specified' && exit 1"
+  },
+  "author": "Adam Hanna <ahanna@alumni.mines.edu>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.9.1",
+    "compression": "^1.7.4",
+    "connect-redis": "^3.4.2",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.1.1",
+    "express-session": "^1.16.2",
+    "passport": "^0.4.0",
+    "pg": "^7.12.0",
+    "postgres-migrations": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/connect-redis": "0.0.10",
+    "@types/cookie-parser": "^1.4.1",
+    "@types/express-session": "^1.15.13",
+    "@types/passport": "^1.0.0",
+    "@types/body-parser": "^1.17.0",
+    "@types/compression": "0.0.36",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^4.17.0",
+    "@types/node": "^12.6.8",
+    "@types/pg": "^7.4.14",
+    "ts-node": "^8.3.0",
+    "ts-node-dev": "^1.0.0-pre.40",
+    "typescript": "^3.5.3"
+  }
+}

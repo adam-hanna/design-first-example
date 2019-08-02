@@ -1,0 +1,55 @@
+version: "3.7"
+
+secrets:
+  session-secret:
+    file: ./docker/secrets/session.secret
+
+services:
+  api:
+    build: .
+    depends_on:
+      - cache
+      - db
+    links:
+      - cache
+      - db
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/home/node/app
+      - /home/node/app/node_modules/
+    secrets:
+      - session-secret
+    environment:
+      - REACT_APP_DEV_API_URL=http://localhost:8080
+      - PORT=8080
+      - HOST=0.0.0.0
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=db
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_PORT=5432
+      - REDIS_HOST=cache
+      - REDIST_PORT=6379
+      - SESSION_SECRET=session-secret
+      
+  cache:
+    image: redis
+    restart: always
+    volumes:
+      - ./docker/volumes/cache:/data
+    ports:
+      - "6378:6379"
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5431:5432"
+    volumes:
+      - ./docker/volumes/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+
