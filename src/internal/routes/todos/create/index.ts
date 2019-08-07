@@ -15,29 +15,34 @@ import { Handler } from '../../../../handlers/todos/create';
 import { CreateTodoPayload } from '../../../../models';
 
 export default async (req: Request, res: Response): Promise<void> => {
-  const appCtx: appContext = app.get('context');
-  const requestCtx: requestContext = new requestContext();
-  
-  let reqPayload: any = Object.assign({}, req.params, req.body);
-  const validationErr: string | void = await Validate(CreateTodoPayload, reqPayload);
-  if (validationErr) {
-    res.status(400).send(validationErr);
+  try {
+    const appCtx: appContext = app.get('context');
+    const requestCtx: requestContext = new requestContext();
+    
+    let payload: CreateTodoPayload = new CreateTodoPayload(Object.assign({}, req.body, req.query, req.params));
+    const validationErr: string | void = await Validate(CreateTodoPayload, payload);
+    if (validationErr) {
+      res.status(400).send(validationErr);
+      return
+    }
+
+    const authenticationErr: HttpReturn | void = await authenticate(appCtx, requestCtx, payload, req, res);
+    if (authenticationErr) {
+      res.status(authenticationErr.status).send(authenticationErr.body);
+      return
+    }
+
+    const authorizationErr: HttpReturn | void = await authorize(appCtx, requestCtx, payload, req, res)
+    if (authorizationErr) {
+      res.status(authorizationErr.status).send(authorizationErr.body);
+      return
+    }
+
+    const result: HttpReturn = await Handler(appCtx, requestCtx, payload)
+    res.status(result.status).send(result.body);
+  } catch (e) {
+    // TODO: add logging, here?
+    res.status(500).send('internal server error');
     return
   }
-  let payload: CreateTodoPayload = Object.assign({}, new CreateTodoPayload, reqPayload);
-
-  const authenticationErr: HttpReturn | void = await authenticate(appCtx, requestCtx, payload, req, res);
-  if (authenticationErr) {
-    res.status(authenticationErr.status).send(authenticationErr.body);
-    return
-  }
-
-  const authorizationErr: HttpReturn | void = await authorize(appCtx, requestCtx, payload, req, res)
-  if (authorizationErr) {
-    res.status(authorizationErr.status).send(authorizationErr.body);
-    return
-  }
-
-  const result: HttpReturn = await Handler(appCtx, requestCtx, payload)
-  res.status(result.status).send(result.body);
 }
