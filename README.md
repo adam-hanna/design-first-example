@@ -9,6 +9,7 @@ Users and TODO's are stored in postgres. Authentication is achieved with cookie 
 The quickest way to run the app is with docker-compose:
 
 ```bash
+$ cp .env.example .env
 $ docker-compose up
 ```
 
