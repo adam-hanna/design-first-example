@@ -11,9 +11,9 @@ export default async (
   req: Request,
   res: Response,
 ): Promise<HttpReturn | void> => {
-  if (req.session.isAdmin)
+  if (requestCtx.isAdmin)
     return
 
-  if (req.session.userID != payload.userID)
+  if (requestCtx.userID != payload.userID)
     return new HttpReturn(401, 'unauthorized');
 }

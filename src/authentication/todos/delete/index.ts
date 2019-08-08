@@ -14,4 +14,11 @@ export default async (
   // check session
   if (!req.session.userID)
     return new HttpReturn(401, 'unauthorized');
+
+  // check csrf
+  if (req.session.csrf !== req.headers['X-CSRF'])
+    return new HttpReturn(401, 'unauthorized');
+
+  requestCtx.isAdmin = req.session.isAdmin;
+  requestCtx.userID = req.session.userID;
 }

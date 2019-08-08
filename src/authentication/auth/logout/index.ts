@@ -13,6 +13,10 @@ export default async (
   if (!req.session.userID)
     return new HttpReturn(401, 'unauthorized');
 
+  // check csrf
+  if (req.session.csrf !== req.headers['X-CSRF'])
+    return new HttpReturn(401, 'unauthorized');
+
   // log the user out
   req.session.destroy((err: any): void => {
     // TODO: properly handler error

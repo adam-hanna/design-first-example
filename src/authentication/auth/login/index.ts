@@ -14,5 +14,10 @@ export default async (
   requestCtx.setSession = (userID: string, isAdmin: boolean): void => {
     req.session.userID = userID;
     req.session.isAdmin = isAdmin;
+
+    // http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
+    const csrf: string = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    req.session.csrf = csrf;
+    res.setHeader('X-CSRF', csrf);
   }
 }
