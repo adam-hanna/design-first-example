@@ -1,13 +1,20 @@
 import appContext from '../../../context/app';
-import routeContext from '../../../context/route/auth/logout';
+import { HttpReturn } from 'design-first';
+import requestContext from '../../../context/request/auth/logout';
 import {
-  HttpException,
 } from '../../../models';
 
-export class Result {
-  constructor(public status: number, public body: string) {}
-}
+export const Handler = async (appCtx: appContext, requestCtx: requestContext): Promise<HttpReturn> => {
+  let result: string;
 
-export const Handler = async (appCtx: appContext, routeCtx: routeContext): Promise<Result | HttpException> => {
-  return new Result(200, 'ok');
+  try {
+    // your code, here...
+    result = 'ok';
+
+    return new HttpReturn(200, result);
+  } catch (e) {
+    console.error('err in logout action of auth service', e);
+
+    return new HttpReturn(500, 'internal server error');
+  }
 }

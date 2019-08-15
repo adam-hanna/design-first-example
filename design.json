@@ -1,0 +1,77 @@
+{
+  "api": {
+    "name": "design-first-example",
+    "description": "An example design-first app with postgres, redis, and passport.js for sessions",
+    "baseURL": "",
+    "version": "0.0.1"
+  },
+  "services": [
+    {
+      "name": "auth",
+      "path": "/auth",
+      "description": "Handles authorization like login, logout and registration",
+      "actions": [
+        {
+          "name": "login",
+          "description": "Creates a user session for access to the private routes",
+          "method": "POST",
+          "path": "/login",
+          "payload": "LoginPayload",
+          "response": "User"
+        },
+        {
+          "name": "logout",
+          "description": "Nullifies the user session",
+          "method": "GET",
+          "path": "/logout"
+        },
+        {
+          "name": "register",
+          "description": "Creates a new user and issues a session",
+          "method": "POST",
+          "path": "/register",
+          "payload": "RegisterPayload",
+          "response": "User"
+        }
+      ]
+    },
+    {
+      "name": "todos",
+      "description": "Items that need doing",
+      "path": "/users/:userID/todos",
+      "actions": [
+        {
+          "name": "create",
+          "description": "Creates a new todo",
+          "method": "POST",
+          "path": "",
+          "payload": "CreateTodoPayload",
+          "response": "Todo"
+        },
+        {
+          "name": "delete",
+          "description": "Deletes a todo by id",
+          "method": "DELETE",
+          "path": "/:todoID",
+          "payload": "DeleteTodoPayload"
+        },
+        {
+          "name": "list",
+          "description": "Lists a user's todos",
+          "method": "GET",
+          "path": "",
+          "payload": "ListTodosPayload",
+          "response": "Todos"
+        },
+        {
+          "name": "show",
+          "description": "Show a todo by id",
+          "method": "GET",
+          "path": "/:todoID",
+          "payload": "ShowTodoPayload",
+          "response": "Todo"
+        }
+      ]
+    }
+  ]
+}

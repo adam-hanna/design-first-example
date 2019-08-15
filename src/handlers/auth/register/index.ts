@@ -1,27 +1,24 @@
 import appContext from '../../../context/app';
-import routeContext from '../../../context/route/auth/register';
+import { HttpReturn } from 'design-first';
+import requestContext from '../../../context/request/auth/register';
 import {
   User,
-  HttpException,
   RegisterPayload,
 } from '../../../models';
 
-export class Result {
-  constructor(public status: number, public body: User) {}
-}
-
-export const Handler = async (appCtx: appContext, routeCtx: routeContext, payload: RegisterPayload): Promise<Result | HttpException> => {
-  let user: User;
+export const Handler = async (appCtx: appContext, requestCtx: requestContext, payload: RegisterPayload): Promise<HttpReturn> => {
+  let result: User;
 
   try {
-    user = await appCtx.db.createUser(payload.username, payload.password);
+    // your code, here...
+    result = await appCtx.db.createUser(payload.username, payload.password);
 
-    routeCtx.setSession(user.userID, user.isAdmin);
+    requestCtx.setSession(result.userID, result.isAdmin);
 
-    return new Result(200, user);
+    return new HttpReturn(200, result);
   } catch (e) {
-    console.error('err registering new user', e);
+    console.error('err in register action of auth service', e);
 
-    return new HttpException(500, 'internal server error');
+    return new HttpReturn(500, 'internal server error');
   }
 }

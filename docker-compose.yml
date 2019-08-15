@@ -21,8 +21,7 @@ services:
     secrets:
       - session-secret
     environment:
-      #- REACT_APP_DEV_API_URL=http://192.168.170.210:8080 #TODO: find a better solution bc of wsl2
-      - REACT_APP_DEV_API_URL=http://localhost:8080 #note: uncomment this line if on mac/unix; and comment the line, above
+      - REACT_APP_DEV_API_URL=http://localhost:8080
       - PORT=8080
       - HOST=0.0.0.0
       - POSTGRES_USER=postgres

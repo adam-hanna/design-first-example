@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
 import appContext from '../../../context/app';
-import routeContext from '../../../context/route/auth/logout';
-import { HttpException } from '../../../models/exceptions/http';
+import requestContext from '../../../context/request/auth/logout';
+import { HttpReturn } from '../../../internal/utils';
 
 export default async (
   appCtx: appContext,
-  routeCtx: routeContext,
+  requestCtx: requestContext,
   req: Request,
   res: Response,
-): Promise<HttpException | void> => {}
+): Promise<HttpReturn | void> => {
+
+}

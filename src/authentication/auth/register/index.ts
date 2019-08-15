@@ -1,18 +1,23 @@
-import express from 'express';
+import { Request, Response } from 'express';
+import { HttpReturn } from 'design-first';
 import appContext from '../../../context/app';
-import routeContext from '../../../context/route/auth/register';
-import { HttpException } from '../../../models/exceptions/http';
+import requestContext from '../../../context/request/auth/register';
 import { RegisterPayload } from '../../../models';
 
 export default async (
   appCtx: appContext,
-  routeCtx: routeContext,
+  requestCtx: requestContext,
   payload: RegisterPayload,
-  req: express.Request,
-  res: express.Response,
-): Promise<HttpException | void> => {
-  routeCtx.setSession = (userID: string, isAdmin: boolean): void => {
+  req: Request,
+  res: Response,
+): Promise<HttpReturn | void> => {
+  requestCtx.setSession = (userID: string, isAdmin: boolean): void => {
     req.session.userID = userID;
     req.session.isAdmin = isAdmin;
+
+    // http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
+    const csrf: string = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    req.session.csrf = csrf;
+    res.setHeader('X-CSRF', csrf);
   }
 }

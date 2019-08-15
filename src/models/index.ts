@@ -1,5 +1,6 @@
-export * from './task';
-export * from './tasks';
-export * from './exceptions/http';
+// note: all of your models should be exported, here
+
+export * from './todo';
+export * from './todos';
 export * from './users';
 export * from './auth';

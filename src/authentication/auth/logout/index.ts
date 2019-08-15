@@ -1,17 +1,21 @@
-import express from 'express';
+import { Request, Response } from 'express';
+import { HttpReturn } from 'design-first';
 import appContext from '../../../context/app';
-import routeContext from '../../../context/route/auth/logout';
-import { HttpException } from '../../../models/exceptions/http';
+import requestContext from '../../../context/request/auth/logout';
 
 export default async (
   appCtx: appContext,
-  routeCtx: routeContext,
-  req: express.Request,
-  res: express.Response,
-): Promise<HttpException | void> => {
+  requestCtx: requestContext,
+  req: Request,
+  res: Response,
+): Promise<HttpReturn | void> => {
   // check session
   if (!req.session.userID)
-    return new HttpException(401, 'unauthorized');
+    return new HttpReturn(401, 'unauthorized');
+
+  // check csrf
+  if (req.session.csrf !== req.headers['X-CSRF'])
+    return new HttpReturn(401, 'unauthorized');
 
   // log the user out
   req.session.destroy((err: any): void => {

@@ -1,29 +1,45 @@
+/**
+ * DO NOT EDIT
+ * AUTO-GENERATED FILE
+ * This file was generated with 'design-first'
+ */
+
 import { Request, Response } from 'express';
+import { RequestPayload, ValidatePayload, MalformedPayloadError, HttpReturn } from 'design-first';
 import app from '../../../app';
 import appContext from '../../../../context/app';
-import routeContext from '../../../../context/route/auth/logout';
-import { HttpException } from '../../../../models/exceptions/http';
+import requestContext from '../../../../context/request/auth/logout';
 import authenticate from '../../../../authentication/auth/logout';
 import authorize from '../../../../authorization/auth/logout';
-import { Result, Handler } from '../../../../handlers/auth/logout';
-import PayloadValidator from '../../../middleware/validation';
+import { Handler } from '../../../../handlers/auth/logout';
 
 export default async (req: Request, res: Response): Promise<void> => {
-  const appCtx: appContext = app.get('context');
-  const routeCtx: routeContext = new routeContext();
+  try {
+    const appCtx: appContext = app.get('context');
+    const requestCtx: requestContext = new requestContext();
+    
+    const authenticationErr: HttpReturn | void = await authenticate(appCtx, requestCtx, req, res);
+    if (authenticationErr) {
+      res.status(authenticationErr.status).send(authenticationErr.body);
+      return
+    }
 
-  const authenticationErr: HttpException | void = await authenticate(appCtx, routeCtx, req, res)
-  if (authenticationErr) {
-    res.status(authenticationErr.status).send(authenticationErr.body);
+    const authorizationErr: HttpReturn | void = await authorize(appCtx, requestCtx, req, res)
+    if (authorizationErr) {
+      res.status(authorizationErr.status).send(authorizationErr.body);
+      return
+    }
+
+    const result: HttpReturn = await Handler(appCtx, requestCtx)
+    res.status(result.status).send(result.body);
+  } catch (e) {
+    if (e instanceof MalformedPayloadError) {
+      res.status(400).send(e.message);
+      return
+    }
+
+    // TODO: add logging, here?
+    res.status(500).send('internal server error');
     return
   }
-
-  const authorizationErr: HttpException | void = await authorize(appCtx, routeCtx, req, res)
-  if (authorizationErr) {
-    res.status(authorizationErr.status).send(authorizationErr.body);
-    return
-  }
-
-  const result: Result | HttpException = await Handler(appCtx, routeCtx)
-  res.status(result.status).send(result.body);
 }

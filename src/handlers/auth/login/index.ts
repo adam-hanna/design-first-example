@@ -1,31 +1,30 @@
 import appContext from '../../../context/app';
-import routeContext from '../../../context/route/auth/login';
+import { HttpReturn } from 'design-first';
+import requestContext from '../../../context/request/auth/login';
 import {
   User,
-  HttpException,
   LoginPayload,
 } from '../../../models';
 
-export class Result {
-  constructor(public status: number, public body: User) {}
-}
-
-export const Handler = async (appCtx: appContext, routeCtx: routeContext, payload: LoginPayload): Promise<Result | HttpException> => {
-  let user: User;
+export const Handler = async (appCtx: appContext, requestCtx: requestContext, payload: LoginPayload): Promise<HttpReturn> => {
+  let result: User;
 
   try {
+    // your code, here...
     let valid: boolean = await appCtx.db.isUsernamePasswordValid(payload.username, payload.password);
     if (!valid)
-       return new HttpException(401, 'unauthorized');
+       return new HttpReturn(401, 'unauthorized');
 
-    user = await appCtx.db.fetchUserByUsername(payload.username);
+    result = await appCtx.db.fetchUserByUsername(payload.username);
 
-    routeCtx.setSession(user.userID, user.isAdmin);
+    requestCtx.setSession(result.userID, result.isAdmin);
 
-    return new Result(200, user);
+    return new HttpReturn(200, result);
+
+    return new HttpReturn(200, result);
   } catch (e) {
-    console.error('err logging user in', e);
+    console.error('err in login action of auth service', e);
 
-    return new HttpException(500, 'internal server error');
+    return new HttpReturn(500, 'internal server error');
   }
 }
